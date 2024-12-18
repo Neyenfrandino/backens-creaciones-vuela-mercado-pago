@@ -18,9 +18,6 @@ if not access_token:
 print("Access token cargado correctamente.")
 
 sdk = mercadopago.SDK(access_token)
-print("SDK cargado correctamente.", sdk)
-print("SDK cargado correctamente.", sdk.get("/v1/payment_methods"))
-print(mercadopago)
 
 def get_mercadopago_sdk():
     if sdk is None:
