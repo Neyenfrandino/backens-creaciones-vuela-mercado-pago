@@ -3,6 +3,10 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 from app.routers import mercado_pago
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 app = FastAPI()
 
