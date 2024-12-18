@@ -7,16 +7,19 @@ from app.routers import mercado_pago
 app = FastAPI()
 
 # Configuración de CORS
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000", 
-        "https://tienda-web-creaciones-vuela.netlify.app"
-    ],
+    allow_origins=["http://localhost:3000", "https://tienda-wep-creaciones-vuela.netlify.app"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
     allow_headers=["*"],
 )
+
 
 # Incluir las rutas de mercado_pago
 app.include_router(mercado_pago.router)
