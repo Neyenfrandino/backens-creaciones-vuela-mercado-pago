@@ -34,7 +34,21 @@ app.include_router(mercado_pago.router)
 async def handle_options(any_path: str):
     return JSONResponse(status_code=200)
 
+import os
+import uvicorn
+from main import app  # Asegúrate de que 'main' sea el archivo que contiene tu instancia de FastAPI.
+
 if __name__ == "__main__":
-    # Obtener el puerto desde la variable de entorno, con un valor predeterminado para desarrollo local.
+    # Detectar el entorno de ejecución
+    is_production = os.getenv("RENDER") is not None  # Render define algunas variables de entorno únicas.
+    
+    # Obtener el puerto dinámicamente o usar un valor predeterminado para desarrollo local
     port = int(os.getenv("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
+    
+    # Configurar el servidor
+    uvicorn.run(
+        app if is_production else "main:app",
+        host="0.0.0.0",
+        port=port,
+        reload=not is_production  # Habilitar reload solo en desarrollo
+    )
