@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+python-multipart
+mercadopago
+python-dotenv
+pydantic
+typing
+httpx
