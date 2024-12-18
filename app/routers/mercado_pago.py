@@ -19,6 +19,8 @@ print("Access token cargado correctamente.")
 
 sdk = mercadopago.SDK(access_token)
 
+print(sdk, 'sdk')
+
 def get_mercadopago_sdk():
     if sdk is None:
         raise ValueError("Mercado Pago SDK no está inicializado correctamente.")
