@@ -21,20 +21,20 @@ sdk = mercadopago.SDK(access_token)
 
 print(sdk, 'sdk')
 
-def get_mercadopago_sdk():
-    if sdk is None:
-        raise ValueError("Mercado Pago SDK no está inicializado correctamente.")
-    return sdk
+# def get_mercadopago_sdk():
+#     if sdk is None:
+#         raise ValueError("Mercado Pago SDK no está inicializado correctamente.")
+#     return sdk
 
 @router.post("/create_preference")
 def create_preference(schema: DataPreference, sdk: mercadopago.SDK = Depends(get_mercadopago_sdk)):
-    try:
-        # Llamada al repositorio para crear la preferencia
-        response = mercadopago_repository(schema.dict(), sdk)
-        return response
-    except Exception as e:
-        return {"error": str(e)}
-
+    # try:
+    #     # Llamada al repositorio para crear la preferencia
+    #     response = mercadopago_repository(schema.dict(), sdk)
+    #     return response
+    # except Exception as e:
+    #     return {"error": str(e)}
+    print(schema, 'schema')
 
 # @router.get("/verify_payment/{payment_id}")
 # async def verify_payment(payment_id):
