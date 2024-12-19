@@ -28,7 +28,8 @@ def mercadopago_repository(schema: dict, sdk):
         raise e  # Re-lanzar para mantener el contexto del error
 
 # Función para confirmar el pago en MercadoPago
-async def confirm_payment(payment_id: str, access_token: str):
+async def confirm_payment(payment_id, access_token: str):
+    
     url = f"https://api.mercadopago.com/v1/payments/{payment_id}"
     
     try:

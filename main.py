@@ -30,13 +30,10 @@ app.add_middleware(
 app.include_router(mercado_pago.router)
 
 # Manejo explícito de solicitudes OPTIONS
-@app.options("/{any_path:path}")
-async def handle_options(any_path: str):
-    return JSONResponse(status_code=200)
+# @app.options("/{any_path:path}")
+# async def handle_options(any_path: str):
+#     return JSONResponse(status_code=200)
 
-import os
-import uvicorn
-from main import app  # Asegúrate de que 'main' sea el archivo que contiene tu instancia de FastAPI.
 
 if __name__ == "__main__":
     # Detectar el entorno de ejecución
