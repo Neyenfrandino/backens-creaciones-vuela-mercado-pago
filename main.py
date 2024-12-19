@@ -24,9 +24,9 @@ app.add_middleware(
 app.include_router(mercado_pago.router)
 
 # Manejo explícito de solicitudes OPTIONS
-# @app.options("/{any_path:path}")
-# async def handle_options(any_path: str):
-#     return JSONResponse(status_code=200)    
+@app.options("/{any_path:path}")
+async def handle_options(any_path: str):
+    return JSONResponse(status_code=200)    
 
 
 @app.get("/")
@@ -36,7 +36,7 @@ def read_root():
 @app.head("/")
 def read_root_head():
     return {"message": "OK"}
-    
+
 if __name__ == "__main__":
     # Detectar el entorno de ejecución
     is_production = os.getenv("RENDER") is not None  # Render define algunas variables de entorno únicas.
