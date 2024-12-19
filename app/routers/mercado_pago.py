@@ -36,12 +36,12 @@ def create_preference(schema: DataPreference, sdk: mercadopago.SDK = Depends(get
     #     return {"error": str(e)}
     print(schema, 'schema')
 
-# @router.get("/verify_payment/{payment_id}")
-# async def verify_payment(payment_id):
-#     payment_info = await confirm_payment(payment_id, access_token)
+@router.get("/verify_payment/{payment_id}")
+async def verify_payment(payment_id):
+    payment_info = await confirm_payment(payment_id, access_token)
     
-#     # Puedes realizar lógica adicional con la información del pago
-#     if payment_info["status"] == "approved":
-#         return {"status": "approved", "payment_info": payment_info}
-#     else:
-#         return {"status": "not approved", "payment_info": payment_info}
+    # Puedes realizar lógica adicional con la información del pago
+    if payment_info["status"] == "approved":
+        return {"status": "approved", "payment_info": payment_info}
+    else:
+        return {"status": "not approved", "payment_info": payment_info}
