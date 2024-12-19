@@ -30,9 +30,9 @@ app.add_middleware(
 app.include_router(mercado_pago.router)
 
 # Manejo explícito de solicitudes OPTIONS
-# @app.options("/{any_path:path}")
-# async def handle_options(any_path: str):
-#     return JSONResponse(status_code=200)
+@app.options("/{any_path:path}")
+async def handle_options(any_path: str):
+    return JSONResponse(status_code=200)
 
 
 if __name__ == "__main__":
