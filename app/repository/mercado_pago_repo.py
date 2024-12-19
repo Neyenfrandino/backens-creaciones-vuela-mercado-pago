@@ -1,9 +1,7 @@
 import httpx
 from fastapi import HTTPException
 
-def mercadopago_repository(schema, sdk):
-    print(schema, 'schema')
-    print(sdk, 'sdk')
+def mercadopago_repository(schema: dict, sdk):
     try:
         # Validación del esquema
         if not isinstance(schema, dict):
@@ -30,8 +28,7 @@ def mercadopago_repository(schema, sdk):
         raise e  # Re-lanzar para mantener el contexto del error
 
 # Función para confirmar el pago en MercadoPago
-async def confirm_payment(payment_id, access_token):
-    print(f"Confirmando el pago con ID: {payment_id}")
+async def confirm_payment(payment_id, access_token: str):
     url = f"https://api.mercadopago.com/v1/payments/{payment_id}"
     
     try:
