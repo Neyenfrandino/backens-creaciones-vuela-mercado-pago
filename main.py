@@ -33,6 +33,10 @@ app.include_router(mercado_pago.router)
 def read_root():
     return {"message": "Bienvenido a mi API"}
 
+@app.head("/")
+def read_root_head():
+    return {"message": "OK"}
+    
 if __name__ == "__main__":
     # Detectar el entorno de ejecución
     is_production = os.getenv("RENDER") is not None  # Render define algunas variables de entorno únicas.
