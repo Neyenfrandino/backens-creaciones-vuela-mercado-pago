@@ -10,12 +10,6 @@ load_dotenv()
 
 app = FastAPI()
 
-# Configuración de CORS
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
-app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://tienda-wep-creaciones-vuela.netlify.app"],
@@ -34,6 +28,10 @@ app.include_router(mercado_pago.router)
 # async def handle_options(any_path: str):
 #     return JSONResponse(status_code=200)    
 
+
+@app.get("/")
+def read_root():
+    return {"message": "Bienvenido a mi API"}
 
 if __name__ == "__main__":
     # Detectar el entorno de ejecución
