@@ -20,14 +20,14 @@ class Item(BaseModel):
         return value
 
 class BackUrl(BaseModel):
-    success: str = 'https://tienda-wep-creaciones-vuela.netlify.app/success'
-    failure: str = 'https://tienda-wep-creaciones-vuela.netlify.app/failure'
-    pending: str = 'https://tienda-wep-creaciones-vuela.netlify.app/pending'  # Ahora está presente por defecto
+    success: str = 'https://tienda-wep-creaciones-vuela.netlify.app/'  # URL del home
+    failure: str = 'https://tienda-wep-creaciones-vuela.netlify.app/'  # URL del home
+    pending: str = 'https://tienda-wep-creaciones-vuela.netlify.app/'  # URL del home
 
     @validator("success", "failure", "pending", pre=True)
     def validate_url(cls, value):
         if value and not re.match(r'http(s)?://', value):
-            raise ValueError(f"{value} is not a valid URL")
+            raise ValueError(f"{value} no es una URL válida")
         return value
 
 class DataPreference(BaseModel):
@@ -38,5 +38,5 @@ class DataPreference(BaseModel):
     @validator("auto_return")
     def validate_auto_return(cls, value):
         if value not in ["approved", "all"]:
-            raise ValueError("auto_return must be either 'approved' or 'all'")
+            raise ValueError("auto_return debe ser 'approved' o 'all'")
         return value
