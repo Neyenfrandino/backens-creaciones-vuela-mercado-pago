@@ -44,6 +44,7 @@ if __name__ == "__main__":
     is_production = os.getenv("RENDER") == "true"  # Variable de entorno para distinguir producción
     port = int(os.getenv("PORT", 8000))  # Usar el puerto definido en las variables de entorno o el predeterminado
 
+    print(f"Ejecutando en entorno {'producción' if is_production else 'desarrollo'}")
     # Configurar y ejecutar Uvicorn
     uvicorn.run(
         app if is_production else "main:app",  # En producción se usa el objeto app directamente
