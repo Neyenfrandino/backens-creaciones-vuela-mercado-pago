@@ -20,9 +20,9 @@ class Item(BaseModel):
         return value
 
 class BackUrl(BaseModel):
-    success: str = 'http://localhost:3000/'
-    failure: str = 'http://localhost:3000/'
-    pending: str = 'http://localhost:3000/'  # Ahora está presente por defecto
+    success: str = 'https://tienda-wep-creaciones-vuela.netlify.app/success'
+    failure: str = 'https://tienda-wep-creaciones-vuela.netlify.app/failure'
+    pending: str = 'https://tienda-wep-creaciones-vuela.netlify.app/pending'  # Ahora está presente por defecto
 
     @validator("success", "failure", "pending", pre=True)
     def validate_url(cls, value):
