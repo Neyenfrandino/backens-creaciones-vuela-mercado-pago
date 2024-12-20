@@ -1,12 +1,25 @@
 import httpx
 from fastapi import HTTPException
+from typing import Dict, Any
 
-def mercadopago_repository(schema, sdk):
+# Constante para la URL base de la API de MercadoPago
+MP_API_BASE_URL = "https://api.mercadopago.com/v1"
+
+def mercadopago_repository(schema: Dict, sdk) -> Dict:
+    """
+    Crea una preferencia de pago en MercadoPago.
+
+    Args:
+        schema (Dict): Datos necesarios para la creación de la preferencia.
+        sdk: SDK de MercadoPago.
+
+    Returns:
+        Dict: Respuesta de la creación de la preferencia.
+
+    Raises:
+        HTTPException: Si ocurre un error durante la creación.
+    """
     try:
-        # # Validación del esquema
-        # if not isinstance(schema, sdk):
-        #     raise ValueError("El esquema debe ser un diccionario válido.")
-
         # Crear preferencia usando el SDK
         response = sdk.preference().create(schema)
 
@@ -15,21 +28,39 @@ def mercadopago_repository(schema, sdk):
             print("Preferencia creada exitosamente:", response.get("response"))
             return response.get("response")
         else:
-            error_message = f"Error al crear preferencia. Código: {response.get('status')}, Detalles: {response.get('response')}"
+            error_details = response.get("response", {}).get("message", "Sin detalles")
+            error_message = f"Error al crear preferencia. Código: {response.get('status')}, Detalles: {error_details}"
             print(error_message)
-            raise Exception(error_message)
+            raise HTTPException(status_code=400, detail=error_message)
 
     except ValueError as ve:
         print(f"Error de validación: {ve}")
-        raise ve  # Re-lanzar para que el controlador lo maneje si es necesario
+        raise HTTPException(status_code=400, detail=str(ve))
 
     except Exception as e:
         print(f"Error inesperado al crear preferencia: {str(e)}")
-        raise e  # Re-lanzar para mantener el contexto del error
+        raise HTTPException(status_code=500, detail="Error al procesar la preferencia")
 
-# Función para confirmar el pago en MercadoPago
-async def confirm_payment(payment_id, access_token: str):
-    url = f"https://api.mercadopago.com/v1/payments/{payment_id}"
+
+async def confirm_payment(payment_id: str, access_token: str) -> Any:
+    """
+    Confirma el estado de un pago en MercadoPago.
+
+    Args:
+        payment_id (str): ID del pago a confirmar.
+        access_token (str): Token de acceso para autenticar la solicitud.
+
+    Returns:
+        Any: Información del pago.
+
+    Raises:
+        HTTPException: Si ocurre un error durante la confirmación.
+    """
+    # Validar que el payment_id no sea vacío
+    if not payment_id:
+        raise HTTPException(status_code=400, detail="El ID del pago no puede estar vacío.")
+
+    url = f"{MP_API_BASE_URL}/payments/{payment_id}"
     
     try:
         # Realizar la solicitud GET a la API de MercadoPago
@@ -43,7 +74,8 @@ async def confirm_payment(payment_id, access_token: str):
             return payment_info
         else:
             # Si la respuesta no fue exitosa, lanzar un error
-            error_message = f"Error al confirmar el pago. Código: {response.status_code}, Detalles: {response.text}"
+            error_details = response.text
+            error_message = f"Error al confirmar el pago. Código: {response.status_code}, Detalles: {error_details}"
             print(error_message)
             raise HTTPException(status_code=response.status_code, detail=error_message)
 
