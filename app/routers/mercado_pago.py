@@ -30,11 +30,11 @@ def get_mercadopago_sdk():
 def create_preference(schema: DataPreference, sdk: mercadopago.SDK = Depends(get_mercadopago_sdk)):
     try:
         # Llamada al repositorio para crear la preferencia
-        response = mercadopago_repository(schema, sdk)
+        response = mercadopago_repository(schema.dict(), sdk)
         return response
     except Exception as e:
         return {"error": str(e)}
-    print(schema, 'schema')
+
 
 @router.get("/verify_payment/{payment_id}")
 async def verify_payment(payment_id):
