@@ -30,7 +30,7 @@ def get_mercadopago_sdk():
 def create_preference(schema: DataPreference, sdk: mercadopago.SDK = Depends(get_mercadopago_sdk)):
     try:
         # Llamada al repositorio para crear la preferencia
-        response = mercadopago_repository(schema.dict(), sdk)
+        response = mercadopago_repository(schema, sdk)
         return response
     except Exception as e:
         return {"error": str(e)}
