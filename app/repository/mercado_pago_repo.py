@@ -23,13 +23,17 @@ def mercadopago_repository(schema: Dict, sdk) -> Dict:
         # Crear preferencia usando el SDK
         response = sdk.preference().create(schema)
 
-        # Validar respuesta de la API
-        if response.get("status") in [200, 201]:  # Estados HTTP de éxito
-            print("Preferencia creada exitosamente:", response.get("response"))
-            return response.get("response")
+        # Verificar si la respuesta fue exitosa
+        if response.status_code in [200, 201]:  # Estados HTTP de éxito
+            preference_data = response.get("response")
+            if preference_data:
+                print("Preferencia creada exitosamente:", preference_data)
+                return preference_data
+            else:
+                raise HTTPException(status_code=400, detail="No se obtuvo respuesta de la preferencia")
         else:
             error_details = response.get("response", {}).get("message", "Sin detalles")
-            error_message = f"Error al crear preferencia. Código: {response.get('status')}, Detalles: {error_details}"
+            error_message = f"Error al crear preferencia. Código: {response.status_code}, Detalles: {error_details}"
             print(error_message)
             raise HTTPException(status_code=400, detail=error_message)
 
@@ -56,24 +60,24 @@ async def confirm_payment(payment_id: str, access_token: str) -> Any:
     Raises:
         HTTPException: Si ocurre un error durante la confirmación.
     """
-    # Validar que el payment_id no sea vacío
-    if not payment_id:
+    if not payment_id or payment_id == "":
         raise HTTPException(status_code=400, detail="El ID del pago no puede estar vacío.")
 
     url = f"{MP_API_BASE_URL}/payments/{payment_id}"
     
     try:
-        # Realizar la solicitud GET a la API de MercadoPago
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers={"Authorization": f"Bearer {access_token}"})
         
-        # Verificar si la respuesta fue exitosa
         if response.status_code == 200:
-            payment_info = response.json()
+            try:
+                payment_info = response.json()
+            except ValueError as e:
+                raise HTTPException(status_code=500, detail=f"Error al procesar la respuesta JSON: {str(e)}")
+            
             print("Información del pago:", payment_info)
             return payment_info
         else:
-            # Si la respuesta no fue exitosa, lanzar un error
             error_details = response.text
             error_message = f"Error al confirmar el pago. Código: {response.status_code}, Detalles: {error_details}"
             print(error_message)
