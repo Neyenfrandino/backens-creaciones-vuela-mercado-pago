@@ -1,10 +1,10 @@
 import httpx
 from fastapi import HTTPException
 
-def mercadopago_repository(schema: dict, sdk):
+def mercadopago_repository(schema, sdk):
     try:
         # Validación del esquema
-        if not isinstance(schema, dict):
+        if not isinstance(schema):
             raise ValueError("El esquema debe ser un diccionario válido.")
 
         # Crear preferencia usando el SDK
