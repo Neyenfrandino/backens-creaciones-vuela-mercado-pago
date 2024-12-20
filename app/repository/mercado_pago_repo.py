@@ -11,18 +11,13 @@ def mercadopago_repository(schema, sdk):
         response = sdk.preference().create(schema)
 
         # Validar respuesta de la API
-        if response.status_code in [200, 201]:  # Estados HTTP de éxito
-            preference_data = response.get("response")
-            if preference_data:
-                print("Preferencia creada exitosamente:", preference_data)
-                return preference_data
-            else:
-                raise HTTPException(status_code=400, detail="No se obtuvo respuesta de la preferencia")
+        if response.get("status") in [200, 201]:  # Estados HTTP de éxito
+            print("Preferencia creada exitosamente:", response.get("response"))
+            return response.get("response")
         else:
-            error_details = response.get("response", {}).get("message", "Sin detalles")
-            error_message = f"Error al crear preferencia. Código: {response.status_code}, Detalles: {error_details}"
+            error_message = f"Error al crear preferencia. Código: {response.get('status')}, Detalles: {response.get('response')}"
             print(error_message)
-            raise HTTPException(status_code=400, detail=error_message)
+            raise Exception(error_message)
 
     except ValueError as ve:
         print(f"Error de validación: {ve}")
