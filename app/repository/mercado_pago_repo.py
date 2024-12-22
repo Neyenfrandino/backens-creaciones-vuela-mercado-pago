@@ -31,28 +31,28 @@ def mercadopago_repository(schema, sdk):
 async def confirm_payment(payment_id, access_token: str):
     url = f"https://api.mercadopago.com/v1/payments/{payment_id}"
     
-    # try:
-    #     # Realizar la solicitud GET a la API de MercadoPago
-    #     async with httpx.AsyncClient() as client:
-    #         response = await client.get(url, headers={"Authorization": f"Bearer {access_token}"})
+    try:
+        # Realizar la solicitud GET a la API de MercadoPago
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, headers={"Authorization": f"Bearer {access_token}"})
         
-    #     # Verificar si la respuesta fue exitosa
-    #     if response.status_code == 200:
-    #         payment_info = response.json()
-    #         print("Información del pago:", payment_info)
-    #         return payment_info
-    #     else:
-    #         # Si la respuesta no fue exitosa, lanzar un error
-    #         error_message = f"Error al confirmar el pago. Código: {response.status_code}, Detalles: {response.text}"
-    #         print(error_message)
-    #         raise HTTPException(status_code=response.status_code, detail=error_message)
+        # Verificar si la respuesta fue exitosa
+        if response.status_code == 200:
+            payment_info = response.json()
+            print("Información del pago:", payment_info)
+            return payment_info
+        else:
+            # Si la respuesta no fue exitosa, lanzar un error
+            error_message = f"Error al confirmar el pago. Código: {response.status_code}, Detalles: {response.text}"
+            print(error_message)
+            raise HTTPException(status_code=response.status_code, detail=error_message)
 
-    # except httpx.RequestError as req_error:
-    #     error_message = f"Error al realizar la solicitud HTTP: {str(req_error)}"
-    #     print(error_message)
-    #     raise HTTPException(status_code=500, detail=error_message)
+    except httpx.RequestError as req_error:
+        error_message = f"Error al realizar la solicitud HTTP: {str(req_error)}"
+        print(error_message)
+        raise HTTPException(status_code=500, detail=error_message)
 
-    # except Exception as e:
-    #     error_message = f"Error inesperado al confirmar el pago: {str(e)}"
-    #     print(error_message)
-    #     raise HTTPException(status_code=500, detail=error_message)
+    except Exception as e:
+        error_message = f"Error inesperado al confirmar el pago: {str(e)}"
+        print(error_message)
+        raise HTTPException(status_code=500, detail=error_message)
