@@ -6,6 +6,7 @@ class Item(BaseModel):
     title: str
     unit_price: float
     quantity: int
+    currency_id: str = "ARS"
 
     @validator("unit_price")
     def validate_unit_price(cls, value):
@@ -33,6 +34,7 @@ class BackUrl(BaseModel):
 class DataPreference(BaseModel):
     items: List[Item]
     back_urls: BackUrl  # No es opcional, siempre se enviará
+    payer_email: EmailStr = "neyenfrandino1@gmail.com"  # Campo añadido para el correo del comprador
     auto_return: str = "approved"  # Cambiado a str con valor por defecto
 
     @validator("auto_return")
