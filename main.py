@@ -15,7 +15,10 @@ app = FastAPI()
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://tienda-wep-creaciones-vuela.netlify.app"],  # Cambiar según sea necesario
+    allow_origins=[
+        "http://localhost:3000",  # Origen local para desarrollo
+        "https://tienda-wep-creaciones-vuela.netlify.app",  # Origen en producción
+    ],    
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
     allow_headers=["*"],
